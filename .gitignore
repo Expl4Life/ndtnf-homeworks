@@ -1,1 +1,10 @@
+node_modules
 .idea
+.env
+solution
+**/data-redis
+**/data
+**/build
+**/dist
+#IDE
+.DS_store
