@@ -1,63 +1,29 @@
+import "reflect-metadata";
 import { IBook } from '../types/IBook';
-import { Schema, model, Document } from 'mongoose';
 import { DeleteResult } from 'mongodb';
+import { injectable } from "inversify";
+import BookModel from '../models/Book';
 
-const bookSchema = new Schema<Document & IBook>({
-    title: {
-        type: String,
-        required: true,
-    },
-    description: {
-        type: String,
-        default: "",
-    },
-    authors: {
-        type: String,
-        default: "",
-    },
-    favorite: {
-        type: String,
-        default: "",
-    },
-    fileCover: {
-        type: String,
-        default: "",
-    },
-    fileName: {
-        type: String,
-        default: "",
-    },
-    fileBook: {
-        type: String,
-        default: "",
-    },
-});
 
-const BookModel = model<Document & IBook>('Book', bookSchema);
-
+@injectable()
 export default class BooksRepository {
 
-    public createBook(book: IBook): IBook {
-        return book;
+    public async createBook(book: IBook): Promise<IBook> {
+        const newBook = new BookModel(book);
+        await newBook.save();
+        return newBook;
     }
 
-    public getBook({ id }: Pick<IBook, 'id'>): Promise<IBook> {
-        return BookModel.findById(id).exec();
+    public getBook(id: string): Promise<IBook> {
+        return BookModel.findById(id).select('-__v').exec();
     }
 
     public getBooks(): Promise<IBook[]> {
         return BookModel.find().exec();
     }
 
-    public updateBook({ id, ...bookInfo }: IBook): Promise<IBook> {
-        return BookModel.findByIdAndUpdate(id, bookInfo, { new: true })
-            .then((res) => {
-                if (res === null) {
-                    return Promise.reject(new Error('Code: 404'));
-                }
-                // eslint-disable-next-line no-underscore-dangle
-                return res;
-            });
+    public updateBook(id: string, book: IBook): Promise<IBook> {
+        return BookModel.findByIdAndUpdate(id, book).exec();
     }
 
     public deleteBook({ id }: Pick<IBook, 'id'>): Promise<DeleteResult> {

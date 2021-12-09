@@ -1,3 +1,10 @@
+# Запуск проекта
+
+* npm install
+* npm run build
+* npm run start
+
+
 # Домашнее задание к занятию «1.3 IoС и DI.  Библиотека reflect-metadata»
 
 **Правила выполнения домашней работы:** 
