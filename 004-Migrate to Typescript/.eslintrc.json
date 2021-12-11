@@ -1,0 +1,53 @@
+{
+    // Настройки проекта
+    "env": {
+        // Проект для браузера
+        "browser": true,
+        // Включаем возможности ES6
+        "es6": true,
+        // Добавляем возможности ES2017
+        "es2017": true
+    },
+    // Наборы правил
+    "extends": [
+        // Базовый набор правил eslint
+        "eslint:recommended",
+        // Отключаем правила из базового набора
+        "plugin:@typescript-eslint/eslint-recommended",
+        // Базовые правила для TypeScript
+        "plugin:@typescript-eslint/recommended",
+        // Правила TS, требующие инфо о типах
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ],
+    // Движок парсинга
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        // Движку нужен проект TS для правил с типами
+        "project": "tsconfig.json",
+        "tsconfigRootDir": "."
+    },
+    // Плагин с наборами правил для TypeScript
+    "plugins": ["@typescript-eslint"],
+    "rules": {
+        "no-duplicate-imports": ["error", { "includeExports": true }], // disallow duplicate module imports
+        "no-template-curly-in-string": "error", // disallow template literalplaceholder syntax in regular strings
+        "block-scoped-var": "error", // enforce the use of variables within the scopethey are defined
+        "curly": ["error", "all"], // enforce consistent brace style for all controlstatements
+        "eqeqeq": "error", // equire the use of === and !==
+        "no-alert": "warn", // disallow the use of alert, confirm, and prompt
+        "no-console": "warn", // disallow the use of console
+        "no-else-return": ["error", { "allowElseIf": false }],
+        "no-implicit-coercion": "error", // disallow shorthand type conversions
+        "no-labels": "error", // disallow labeled statements
+        "no-lone-blocks": "error", // disallow unnecessary nested blocks
+        "no-multi-spaces": "error", // disallow multiple spaces
+        "no-new": "error", // disallow new operators outside of assignments orcomparisons
+        "no-new-func": "error", // disallow new operators with the Function object
+        "no-new-wrappers": "error", // disallow new operators with the String, Number,and Boolean objects
+        "no-return-await": "error", // disallow unnecessary return await
+        "no-self-compare": "error", // disallow comparisons where both sides areexactly the same
+        "no-sequences": "error", // disallow comma operators
+        "no-throw-literal": "error", // disallow throwing literals as exceptions,
+        "@typescript-eslint/no-inferrable-types": "off" // Closed type inference
+    }
+}
