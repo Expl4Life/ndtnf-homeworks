@@ -1,23 +1,22 @@
 import BooksRepository from '../../db/BooksRepository';
 import container from '../../container';
-import express from 'express';
-import { Book } from '../../models';
+import express, {Request, Response} from 'express';
 import { errorCreator } from '../../utils';
+import { IBook } from '../../types/IBook';
 
 const router = express.Router();
 
 //BOOKS API
-
 // GET
-router.get('/', async (req, res) => {
-    const repo = container.get(BooksRepository);
+router.get('/', async (req: Request, res: Response) => {
+    const repo: BooksRepository = container.get(BooksRepository);
     const books = await repo.getBooks();
     res.json(books);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
-    const repo = container.get(BooksRepository);
+    const repo: BooksRepository = container.get(BooksRepository);
 
     try {
         const book = await repo.getBook(id);
@@ -29,8 +28,8 @@ router.get('/:id', async (req, res) => {
 });
 
 // POST
-router.post('/', async (req, res) => {
-    const repo = container.get(BooksRepository);
+router.post('/', async (req: Request, res: Response) => {
+    const repo: BooksRepository = container.get(BooksRepository);
     const {
         title,
         description,
@@ -50,7 +49,7 @@ router.post('/', async (req, res) => {
             fileCover,
             fileName,
             fileBook,
-        })
+        } as IBook)
         
         res.status(201);
         res.json(newBook);
@@ -61,9 +60,9 @@ router.post('/', async (req, res) => {
 });
 
 // PUT
-router.put('/:id', async (req, res) => {
+router.put('/:id', async (req: Request, res: Response) => {
     const { id } = req.params;
-    const repo = container.get(BooksRepository);
+    const repo: BooksRepository = container.get(BooksRepository);
     const {
         title,
         description,
@@ -81,7 +80,7 @@ router.put('/:id', async (req, res) => {
             favorite,
             fileCover,
             fileName,
-        });
+        } as IBook);
         res.json(book);
     } catch (e) {
         console.error(e);
@@ -91,11 +90,13 @@ router.put('/:id', async (req, res) => {
 
 
 // DELETE
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', async (req: Request, res: Response) => {
     const {id} = req.params;
 
+    const repo: BooksRepository = container.get(BooksRepository);
+
     try {
-        await Book.deleteOne({_id: id});
+        await repo.deleteBook(id);
         res.json(true);
     } catch (e) {
         console.error(e);
@@ -103,4 +104,4 @@ router.delete('/:id', async (req, res) => {
     }
 });
 
-module.exports = router;
+export default router

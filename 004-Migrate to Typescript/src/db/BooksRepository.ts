@@ -26,7 +26,7 @@ export default class BooksRepository {
         return BookModel.findByIdAndUpdate(id, book).exec();
     }
 
-    public deleteBook({ id }: Pick<IBook, 'id'>): Promise<DeleteResult> {
+    public deleteBook(id: string): Promise<DeleteResult> {
         return BookModel.deleteOne({ _id: id }).exec();
     }
 }

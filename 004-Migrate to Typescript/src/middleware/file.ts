@@ -1,17 +1,17 @@
-const multer = require('multer');
+import multer from 'multer';
 
 const storage = multer.diskStorage({
-    destination(req, file, cb) {
+    destination(req: any, file: any, cb: any) {
         cb(null, 'public/img')
     },
-    filename(req, file, cb) {
+    filename(req: any, file: any, cb: any) {
         cb(null, `${new Date().toISOString().replace(/:/g, '-')}-${file.originalname}`)
     }
 });
 
-const allowedTypes = ['image/png', 'image/jpg', 'image/jpeg'];
+const allowedTypes: string [] = ['image/png', 'image/jpg', 'image/jpeg'];
 
-const fileFilter = (req, file, cb) => {
+const fileFilter = (req: any, file: any, cb: any): void => {
     if (allowedTypes.includes(file.mimetype)) {
         cb(null, true)
     } else {
@@ -19,7 +19,7 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-module.exports = multer({
+export default multer({
     storage,
     fileFilter
 });
