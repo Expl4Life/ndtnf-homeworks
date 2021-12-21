@@ -1,4 +1,5 @@
 const path = require('path');
+const HTMLPlugin = require('html-webpack-plugin')
 
 module.exports = {
   mode: "development",
@@ -21,5 +22,10 @@ module.exports = {
       // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
       { test: /\.ts$/, loader: "ts-loader" }
     ]
-  }
+  },
+  plugins: [
+    new HTMLPlugin({
+      template: './src/index.html'
+    })
+  ]
 };
