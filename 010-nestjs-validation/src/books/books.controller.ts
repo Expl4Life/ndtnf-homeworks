@@ -9,19 +9,21 @@ import {
   Param,
   Post,
   Put,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksService } from './books.service';
 import { Book } from './schemas/book.schema';
-import { throwError } from 'rxjs';
+import { ParseIntPipe, JoiValidationPipe } from '../pipes';
+import { updateBookSchema } from './joi';
 
 @Controller('books')
+@UsePipes(ValidationPipe)
 export class BooksController {
 
-  constructor(private readonly BooksService: BooksService) {
-  }
-
+  constructor(private readonly BooksService: BooksService) {}
 
   @Get()
   getAll(): Promise<Book[]> {
@@ -30,8 +32,15 @@ export class BooksController {
 
   @Get(':id')
   getById(@Param('id') id: string): Promise<Book> {
+    // FOR TEST
     // return Promise.reject();
     return this.BooksService.getById(id)
+  }
+
+  // FOR TEST ParseIntPipe
+  @Get('/number/:id')
+  getByNumberId(@Param('id', ParseIntPipe) id: number): Promise<number> {
+    return Promise.resolve(id);
   }
 
   @Post()
@@ -47,6 +56,7 @@ export class BooksController {
   }
 
   @Put(':id')
+  @UsePipes(new JoiValidationPipe(updateBookSchema))
   update(@Body() updateBookDto: UpdateBookDto, @Param('id') id: string): Promise<Book> {
     return this.BooksService.update(id, updateBookDto)
   }
