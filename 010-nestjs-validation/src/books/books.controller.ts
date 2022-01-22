@@ -14,6 +14,7 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { BooksService } from './books.service';
 import { Book } from './schemas/book.schema';
+import { throwError } from 'rxjs';
 
 @Controller('books')
 export class BooksController {
@@ -29,6 +30,7 @@ export class BooksController {
 
   @Get(':id')
   getById(@Param('id') id: string): Promise<Book> {
+    // return Promise.reject();
     return this.BooksService.getById(id)
   }
 
